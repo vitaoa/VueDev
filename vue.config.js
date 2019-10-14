@@ -1,17 +1,17 @@
 const path = require('path')
 const port = 1234 // dev port
 
-const { pages } = require('./build/pages.js')
+const { htmlWebpackPlugins, pages } = require('./build/pages.js')
+// console.log('htmlWebpackPlugins==============', htmlWebpackPlugins)
 // console.log('pages==============', pages)
 
 module.exports = {
     pages,
-    // publicPath: '/',
+    // publicPath: process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/',
     outputDir: 'dist',
     assetsDir: 'static',
-    // lintOnSave: process.env.NODE_ENV === 'development',
     lintOnSave: false,
-    productionSourceMap: true,
+    productionSourceMap: false,
     devServer: {
         port: port,
         open: false,
@@ -21,11 +21,11 @@ module.exports = {
         }
     },
     configureWebpack: {
-        resolve: {
-            alias: {
-                '@': path.join(__dirname, 'src')
-            }
-        }
+        plugins: [...htmlWebpackPlugins]
+    },
+    chainWebpack: config => {
+        // 添加别名
+        config.resolve.alias
+          .set('@', path.join(__dirname, 'src'))
     }
 }
-
