@@ -1,8 +1,9 @@
+console.log('ID app...')
 import Vue from 'vue'
 import App from './App.vue'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 
 new Vue({
-  render: h => h(App),
+  render: h => h(App)
 }).$mount('#app')

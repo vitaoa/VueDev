@@ -1,0 +1,8 @@
+{
+    "editor.wordWrapColumn": 150,
+    "editor.formatOnSave": true,
+    "prettier.semi": false,
+    "editor.fastScrollSensitivity": 12,
+    "liveServer.settings.port": 12345,
+    "liveServer.settings.root": "/dist"
+}
