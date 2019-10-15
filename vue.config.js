@@ -7,7 +7,7 @@ const { htmlWebpackPlugins, pages } = require('./build/pages.js')
 
 module.exports = {
     pages,
-    // publicPath: process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/VueDev' : '/',
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: false,
