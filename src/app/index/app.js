@@ -1,5 +1,5 @@
 
-import '@/base/jquery-vender'
+// import '@/base/jquery-vender'
 import Vue from 'vue'
 import App from './App.vue'
 
