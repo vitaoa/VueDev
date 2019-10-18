@@ -1,4 +1,5 @@
-console.log('ID app...')
+
+import '@/base/jquery-vender'
 import Vue from 'vue'
 import App from './App.vue'
 

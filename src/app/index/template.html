@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover" name="viewport">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="icon" href="/favicon.ico">
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <script>
+        /* 适配 */
+        (function (doc, win) {
+            function recalc(x, bol) {
+                var clientWidth = document.documentElement.clientWidth
+
+                if (bol && (!clientWidth || clientWidth > x)) {
+                    document.documentElement.style.fontSize = ''
+                    return
+                }
+                document.documentElement.style.fontSize = 100 * (clientWidth / x) + 'px'
+            }
+            var remCompute = function (width, device) {
+                if (window.addEventListener) {
+                    recalc(width, device)
+                    var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+                    window.addEventListener(resizeEvt, function () { recalc(width, device) }, false)
+                }
+            }
+            remCompute(750, false)
+        })(document, window)
+        function getUrlParams() {
+            var url = window.location.search // 获取url中"?"符及其后的字串
+            var theRequest = {}
+            if (url.indexOf('?') !== -1) {
+                var str = url.substr(1)
+                var strs = str.split('&')
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+                }
+            }
+            return theRequest
+        }
+        var UrlParams = getUrlParams(),
+            appName = UrlParams.appName || '',
+            isPRD = location.port == '';
+    </script>
+</body>
+
+</html>

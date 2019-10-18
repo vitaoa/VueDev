@@ -7,7 +7,8 @@ const { htmlWebpackPlugins, pages } = require('./build/pages.js')
 
 module.exports = {
     pages,
-    publicPath: process.env.NODE_ENV === 'production' ? '/VueDev' : '/',
+    // publicPath: process.env.NODE_ENV === 'production' ? '/VueDev' : '/',//git
+    publicPath: process.env.NODE_ENV === 'production' ? '' : '/', // test
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: false,
@@ -27,5 +28,15 @@ module.exports = {
         // 添加别名
         config.resolve.alias
           .set('@', path.join(__dirname, 'src'))
+    },
+    css: {
+        loaderOptions: {
+            sass: {
+                prependData: `@import "~@/scss/app/setting"`
+            },
+            scss: {
+                prependData: `@import "~@/scss/app/setting";`
+            }
+        }
     }
 }

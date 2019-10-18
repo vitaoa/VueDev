@@ -55,6 +55,26 @@
     > >
         bash deploy.sh
 
+# loader
+
+1.  安装：npm install -D sass-loader node-sass
+
+1.  配置：0 配置既可以使用
+
+1.  引入 SCSS 全局变量
+    > >
+        css: {
+            loaderOptions: {
+                sass: {
+                    // 注意：在 sass-loader v7 中，这个选项名是 "data"
+                    prependData: `@import "~@/scss/app/setting"`
+                },
+                scss: {
+                    prependData: `@import "~@/scss/app/setting";`
+                }
+            }
+        }
+
 ### Project setup
 
 ```
