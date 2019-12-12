@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    props: ['index', 'pageLength'],
+    props: ['index', 'pageLength', 'title'],
     name: 'SliderItem',
     data() {
         return {
@@ -34,7 +34,18 @@ export default {
     mounted() {
         this.renderDom()
         this.data.$el = this.$el
-        // console.log(options)
+        console.log("mounted->", this.$el)
+    },
+    computed: {
+        curNumber() {
+            let curNumber = 12000;
+            //数字随机累加
+            setInterval(() => {
+                curNumber += this.randomNumBoth(1, 5)
+                // console.log("_curNumber", this.randomNumBoth(1, 5), curNumber)
+            }, 3000)
+            return curNumber;
+        },
     },
     methods: {
         touchStart(e) {

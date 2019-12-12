@@ -3,7 +3,7 @@
         <div class="m-banner">
             <Slider ref="slider" :options="sliderOptions">
                 <!-- slideritem wrapped package with the components you need -->
-                <SliderItem v-for="(item,index) in bannerData" :key="index" :style="item.style" @click.native="jumpLink(item)">{{item.html}}</SliderItem>
+                <SliderItem v-for="(item,index) in bannerData" :key="index" :style="item.style" @click.native="jumpLink(item)" :title="item.title"></SliderItem>
                 <!-- Customizable loading -->
                 <div slot="loading">loading...</div>
             </Slider>
@@ -25,7 +25,7 @@ export default {
             listPagination: '',
             options: {
                 loop: false,
-                autoplay: 3000,
+                autoplay: 30000,
             }
         }
     },
@@ -36,17 +36,15 @@ export default {
         },
         bannerData() {
             let bArray = [];
-            this.bannerList.sort(function (a, b) {
-                var va, vb;
-                va = isNaN(parseInt(a.sort)) ? null : parseInt(a.sort);
-                vb = isNaN(parseInt(b.sort)) ? null : parseInt(b.sort);
-                return (vb != null) - (va != null) || va - vb;
-            });
-
             this.bannerList.forEach(item => {
+                let slideHtml = '';
+                // if (item.title == 'activity') {
+                //     slideHtml = `<div class="numberCount din">Dibagikan <span>${this.curNumber}</span> </div>`
+                // }
                 bArray.push({
                     style: `background-image:url(${item.cover}?t=${new Date().getTime()});background-repeat:no-repeat;background-size:100%;`,
-                    html: "",
+                    title: item.title,
+                    html: slideHtml,
                     url: item.url
                 })
             });
@@ -71,7 +69,7 @@ export default {
             }).fail(function () {
                 console.log("error");
             }).always(function () {
-                console.log("complete");
+                // console.log("complete");
             });
         },
         jumpLink(item) {
@@ -80,6 +78,12 @@ export default {
                 console.log("jumpLink->", url)
                 window.location.herf = url
             }
+        },
+        randomNumBoth(Min, Max) {
+            let Range = Max - Min;
+            let Rand = Math.random();
+            let num = Min + Math.round(Rand * Range);
+            return num;
         },
     },
     created() {
@@ -107,10 +111,26 @@ body {
         arial;
     color: #476174;
 }
-.m-banner {
-    height: 3.2rem;
-}
 .wrapper {
     overflow: hidden;
+}
+.m-banner {
+    height: 3.2rem;
+    .numberCount {
+        position: absolute;
+        top: 0;
+        left: 0.1rem;
+        line-height: 0.36rem;
+        .lottery-block {
+            @include inline-block;
+        }
+    }
+}
+.numberCount {
+    font-size: 0.2rem;
+    color: #ffe16a;
+    span {
+        margin: 0 0.1rem;
+    }
 }
 </style>
