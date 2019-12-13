@@ -119,6 +119,49 @@
             gzip_vary on;
             gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
 
+# git 操作
+
+1.  查看所有分支
+
+    git branch -a
+
+1.  删除分支
+
+    - git branch -d test:删除本地分支
+    - git push origin --delete test:删除远程分支
+
+1.  创建分支
+
+    - git checkout -b test：创建了一个名称为 test 的分支并切换到 test 分支上去
+    - git checkout -b test master：从 master 分支分化一个新分支名为 test，并切换到 test 分支上去
+
+1.  推送分支
+
+    - git push origin test:推送本地新分支到远程
+    - 推送单个 commit 到另一个分支
+
+            cherry-pick 命令:
+            eg:将 master （本地尚未提交）分支的 commit b169a68 合并到 test 分支
+            1: 先切换到分支 test：git checkout test
+            2: 合并 commit b169a68：git cherry-pick b169a68
+            现在 b169a68 就被合并到 test 分支，并在 test 中添加了 commit（作为一个新的 commit）。
+
+1.  撤销
+
+    - git reset --hard HEAD
+    - git reset --hard commit_id //或者使用更精确的指定回滚到某一次的 commit 上面
+    - git merge --abort //丢弃正在进行的合并
+    - 撤回已经 push 到远程的 commit
+
+            先本地回滚：git reset --hard commit_id
+            再本地强制推送到远程分支：git push -f origin test
+
+    - 取消撤回已经 push 到远程的 commit
+
+            查看所有分支的所有操作记录（包括已经被删除的 commit 记录和 reset 的操作）:git reflog
+            重新回到以前提交的版本：git reset --hard commit_id
+            再本地推送到远程分支：git push origin test
+
 ### Project setup
 
 ```
