@@ -2,7 +2,25 @@
     "editor.wordWrapColumn": 150,
     "editor.formatOnSave": true,
     "prettier.semi": false,
+    "prettier.singleQuote": true,
     "editor.fastScrollSensitivity": 12,
     "liveServer.settings.port": 12345,
-    "liveServer.settings.root": "/dist"
+    "liveServer.settings.root": "/dist",
+    "vetur.format.options.tabSize": 4,
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "vetur.format.defaultFormatterOptions": {
+        "prettyhtml": {
+            "printWidth": 150,
+            "wordWrapColumn": 150,
+            "wrapAttributes": false,
+            "sortAttributes": false
+        },
+        "js-beautify-html": {
+            "wrap_attributes": "auto"
+        }
+    },
+    "editor.wordWrap": "on",
+    "prettier.disableLanguages": ["jsx", "vue"],
+    "prettier.tabWidth": 4,
+    "prettier.printWidth": 150
 }
