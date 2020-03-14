@@ -915,7 +915,7 @@ export default {
     width: 100%;
 }
 .swiper-container-horizontal > * > .slider-pagination-bullet {
-    background: if($c-yellow, $c-yellow, #000) none repeat scroll 0 0;
+    background: if($c-default, $c-default, #000) none repeat scroll 0 0;
     border-radius: 100%;
     display: inline-block;
     height: 8px;

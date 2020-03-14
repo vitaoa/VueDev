@@ -1,20 +1,15 @@
 <template>
     <div class="wrapper">
-        <div class="m-banner">
-            <Slider ref="slider" :options="sliderOptions">
-                <!-- slideritem wrapped package with the components you need -->
-                <SliderItem v-for="(item,index) in bannerData" :key="index" :style="item.style" @click.native="jumpLink(item)" :title="item.title"></SliderItem>
-                <!-- Customizable loading -->
-                <div slot="loading">loading...</div>
-            </Slider>
-        </div>
+        <transition name="fade">
+            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" />
+        </transition>
+        <Bottom />
     </div>
 </template>
 
 <script>
-import Slider from '@/components/app/Slider'
-import SliderItem from '@/components/app/SliderItem'
 import { mSiteUrl, weatherUrl } from './config'
+import Bottom from '@/components/app/Bottom'
 
 export default {
     name: 'app',
@@ -22,7 +17,7 @@ export default {
         return {
             mSiteUrl,
             bannerList: [],
-            listPagination: '',
+            // listPagination: '',
             options: {
                 loop: false,
                 autoplay: 30000,
@@ -52,8 +47,19 @@ export default {
         },
     },
     methods: {
-        initData() {
+        getData: function () {
             let _this = this;
+            var url = "/api/getbannerlist";
+            $.ajax({
+                url: url,
+                dataType: "json",
+            }).done(function (res) {
+                _this.bannerList = res.data;
+                _this.bannerList.length > 1 && (_this.options.loop = true);
+            })
+        },
+        initData() {
+            // let _this = this;
             // $.ajax({
             //     url: `${mSiteUrl}/fApi/APPbanner`,
             //     dataType: "jsonp",
@@ -73,14 +79,15 @@ export default {
             // });
         },
         init() {
-            $.ajax({
-                url: '/api/' + weatherUrl,
-                data: {
-                    cityname: "深圳"
-                }
-            }).done(function (res) {
-                console.log(res)
-            })
+            this.getData();
+            // $.ajax({
+            //     url: '/api/' + weatherUrl,
+            //     data: {
+            //         cityname: "深圳"
+            //     }
+            // }).done(function (res) {
+            //     console.log(res)
+            // })
         },
         jumpLink(item) {
             let url = item.url
@@ -97,7 +104,6 @@ export default {
         },
     },
     created() {
-        this.initData();
         this.init();
     },
     mounted: function () {
@@ -105,13 +111,13 @@ export default {
 
     },
     components: {
-        Slider,
-        SliderItem,
+        Bottom
     },
 }
 </script>
 
 <style lang="scss">
+@import "/static/iconfont/iconfont.css";
 @import "~@/scss/mixins/library";
 @import "~@/scss/normalize";
 html {
@@ -120,7 +126,7 @@ html {
 body {
     font: 13px/1.4 PingFang SC, Microsoft YaHei, simsun, "sans-serif", helvetica,
         arial;
-    color: #476174;
+    color: $c-default;
 }
 .wrapper {
     overflow: hidden;
@@ -143,5 +149,13 @@ body {
     span {
         margin: 0 0.1rem;
     }
+}
+.fade-enter-active,
+.fade-leave-acitve {
+    transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
