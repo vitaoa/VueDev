@@ -20,15 +20,31 @@ Mock.mock('/api/getprodlist', 'get', (req, res) => {
     }
 })
 
-//bannerData
-let bannerDataList = Mock.mock([
-    {
-        cover: '/static/images/banner.jpg'
-    },
-    {
-        cover: '/static/images/banner2.jpg'
+Mock.Random.extend({
+    bannerDefaultList: function(date) {
+        var constellations = [
+            'https://dummyimage.com/375x160/e977fd.png&text=vue+mockjs',
+            'https://dummyimage.com/375x160/85f5a2.png&text=vue+mockjs'
+        ]
+        return this.pick(constellations)
     }
-])
+})
+Mock.Random.bannerDefaultList()
+
+//bannerData
+let bannerDataList = Mock.mock({
+    list: [
+        {
+            cover: '/static/images/banner.jpg'
+        },
+        {
+            cover: '@bannerDefaultList'
+        },
+        {
+            cover: '/static/images/banner2.jpg'
+        }
+    ]
+})
 Mock.mock('/api/getbannerlist', 'get', (req, res) => {
     return {
         status: 0,

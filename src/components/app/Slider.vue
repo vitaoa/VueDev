@@ -915,7 +915,7 @@ export default {
     width: 100%;
 }
 .swiper-container-horizontal > * > .slider-pagination-bullet {
-    background: if($c-default, $c-default, #000) none repeat scroll 0 0;
+    background: rgba($color: $c-default, $alpha: 0.3) none repeat scroll 0 0;
     border-radius: 100%;
     display: inline-block;
     height: 8px;
@@ -944,7 +944,7 @@ export default {
 }
 .swiper-container-vertical .slider-pagination-bullet-active,
 .swiper-container-horizontal .slider-pagination-bullet-active {
-    background: #fff none repeat scroll 0 0;
+    background: $c-default none repeat scroll 0 0;
     opacity: 1;
 }
 .slider-loading {

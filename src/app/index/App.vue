@@ -19,8 +19,8 @@ export default {
             bannerList: [],
             // listPagination: '',
             options: {
-                loop: false,
-                autoplay: 30000,
+                loop: true,
+                autoplay: 3000,
             }
         }
     },
@@ -37,7 +37,7 @@ export default {
                 //     slideHtml = `<div class="numberCount din">Dibagikan <span>${this.curNumber}</span> </div>`
                 // }
                 bArray.push({
-                    style: `background-image:url(${item.cover}?t=${new Date().getTime()});background-repeat:no-repeat;background-size:100%;`,
+                    style: `background-image:url(${item.cover});background-repeat:no-repeat;background-size:100%;`,
                     title: item.title,
                     html: slideHtml,
                     url: item.url
@@ -54,7 +54,7 @@ export default {
                 url: url,
                 dataType: "json",
             }).done(function (res) {
-                _this.bannerList = res.data;
+                _this.bannerList = res.data.list;
                 _this.bannerList.length > 1 && (_this.options.loop = true);
             })
         },
