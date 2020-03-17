@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper">
         <transition name="fade">
-            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" />
+            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" @topicDatas="getTopicDatas" @curNumberRandom="getNumberRandom" @jumpLink="jumpLink" />
         </transition>
-        <Bottom />
+        <Bottom :footerNav=footerNav />
     </div>
 </template>
 
@@ -16,12 +16,18 @@ export default {
     data() {
         return {
             mSiteUrl,
+            footerNav:[
+                {name:"首页",icon:"icon-APPkaifa",path:"/home"},
+                {name:"脚本",icon:"icon-js",path:"/js"},
+                {name:"框架",icon:"icon-frame",path:"/frame"},
+                {name:"全栈",icon:"icon-code",path:"/full"},
+            ],
             bannerList: [],
-            // listPagination: '',
             options: {
                 loop: true,
                 autoplay: 3000,
-            }
+            },
+            curNumber:12000
         }
     },
     computed: {
@@ -33,9 +39,9 @@ export default {
             let bArray = [];
             this.bannerList.forEach(item => {
                 let slideHtml = '';
-                // if (item.title == 'activity') {
-                //     slideHtml = `<div class="numberCount din">Dibagikan <span>${this.curNumber}</span> </div>`
-                // }
+                if (item.title == 'activity') {
+                    slideHtml = `<div class="numberCount">activity<span>${this.curNumber}</span> </div>`
+                }
                 bArray.push({
                     style: `background-image:url(${item.cover});background-repeat:no-repeat;background-size:100%;`,
                     title: item.title,
@@ -44,7 +50,7 @@ export default {
                 })
             });
             return bArray;
-        },
+        }
     },
     methods: {
         getData: function () {
@@ -80,20 +86,17 @@ export default {
         },
         init() {
             this.getData();
-            // $.ajax({
-            //     url: '/api/' + weatherUrl,
-            //     data: {
-            //         cityname: "深圳"
-            //     }
-            // }).done(function (res) {
-            //     console.log(res)
-            // })
+        },
+        getNumberRandom(data) {
+            //数字随机累加
+            setInterval(() => {
+                this.curNumber += this.randomNumBoth(1, 5)
+            }, 3000)
         },
         jumpLink(item) {
             let url = item.url
-            if (url != '') {
-                console.log("jumpLink->", url)
-                window.location.herf = url
+            if (!!url) {
+                window.open(url)
             }
         },
         randomNumBoth(Min, Max) {
@@ -101,14 +104,13 @@ export default {
             let Rand = Math.random();
             let num = Min + Math.round(Rand * Range);
             return num;
-        },
+        }
     },
     created() {
         this.init();
     },
     mounted: function () {
         window["vm"] = this;
-
     },
     components: {
         Bottom
@@ -145,7 +147,7 @@ body {
 }
 .numberCount {
     font-size: 0.2rem;
-    color: #ffe16a;
+    color: $bgc-default-fc;background:$bgc-default;
     span {
         margin: 0 0.1rem;
     }

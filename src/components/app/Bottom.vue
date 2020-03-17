@@ -1,27 +1,13 @@
 <template>
     <div class="footer-fixed flex">
-        <router-link to="/">
-            <span class="iconfont icon-APPkaifa"></span> 首页
-        </router-link>
-        <router-link to="/js">
-            <span class="iconfont icon-js"></span> 脚本
-        </router-link>
-        <router-link to="/frame">
-            <span class="iconfont icon-frame"></span> 框架
-        </router-link>
-        <router-link to="/full">
-            <span class="iconfont icon-code"></span> 全栈
+        <router-link v-for="menu in footerNav" :to="menu.path" v-gtm:bottomNav="menu">
+            <span v-if="menu.icon" class="iconfont" :class="menu.icon"></span> {{menu.name}}
         </router-link>
     </div>
 </template>
 <script>
 export default {
-    data() {
-        return {
-
-        }
-    },
-    props: []
+    props: ["footerNav"]
 }
 </script>
 <style scoped lang="scss">
@@ -29,20 +15,20 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 0.88rem;
-    line-height: 0.88rem;
-    background: $bgc-1;
-    font-size: 0.3rem;
+    height: 44px;
+    line-height: 44px;
+    background: linear-gradient($bgc-bar-1,$bgc-bar-2);
+    font-size: 12px;
     text-align: center;
     a {
-        color: rgba($c-blue, 0.5);
-        margin: 0 0.2rem;
+        color: $bgc-bar-fc2;
+        margin: 0 10px;
     }
     .iconfont {
-        font-size: 0.4rem;
+        font-size: 20px;
     }
     .active {
-        color: $c-blue;
+        color: $bgc-bar-fc1;
     }
 }
 .flex {
@@ -53,14 +39,13 @@ export default {
     a {
         flex: 1;
         margin: 0;
-        padding: 0.15rem 0;
+        padding: 8px 0;
         span {
             display: block;
-            margin-bottom: 0.04rem;
+            margin-bottom: 2px;
         }
     }
     .active {
-        background: $c-default;
     }
 }
 </style>

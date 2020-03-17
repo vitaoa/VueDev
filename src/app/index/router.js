@@ -1,11 +1,11 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 // 定义路由
 const routes = [
     {
-        path: '/',
+        path: '/home',
         component: () => import(/* webpackChunkName: "home" */ '../../components/app/views/index.vue')
     },
     {
@@ -26,13 +26,14 @@ const routes = [
         alias: '*'
     },
     {
-        path: '*'
+        path: '/',
+        redirect:'/home'
     }
 ]
 
 // 实例化
 const router = new VueRouter({
-    linkExactActiveClass: 'active',
+    linkActiveClass: 'active',
     routes
 })
 export default router

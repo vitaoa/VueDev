@@ -4,7 +4,7 @@
     "prettier.semi": false,
     "prettier.singleQuote": true,
     "editor.fastScrollSensitivity": 12,
-    "liveServer.settings.port": 12345,
+    "liveServer.settings.port": 12346,
     "liveServer.settings.root": "/dist",
     "vetur.format.options.tabSize": 4,
     "vetur.format.defaultFormatter.js": "vscode-typescript",
