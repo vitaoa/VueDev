@@ -15,37 +15,24 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 44px;
-    line-height: 44px;
-    background: linear-gradient($bgc-bar-1,$bgc-bar-2);
+    height: 50px;
+    line-height: 1;
+    background: linear-gradient($bgc-bar-1, $bgc-bar-2);
     font-size: 12px;
     text-align: center;
     a {
         color: $bgc-bar-fc2;
-        margin: 0 10px;
+        display: inline-block;
+        span {
+            display: block;
+            margin-bottom: 2px;
+        }
     }
     .iconfont {
         font-size: 20px;
     }
     .active {
         color: $bgc-bar-fc1;
-    }
-}
-.flex {
-    display: flex;
-    align-items: center;
-    line-height: 1;
-    height: auto;
-    a {
-        flex: 1;
-        margin: 0;
-        padding: 8px 0;
-        span {
-            display: block;
-            margin-bottom: 2px;
-        }
-    }
-    .active {
     }
 }
 </style>

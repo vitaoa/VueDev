@@ -1,3 +1,5 @@
+import md5 from 'js-md5'
+import axios from 'axios'
 const MyPlugin ={
     install(Vue,opts){
         // 1. 添加全局方法或属性
@@ -26,6 +28,8 @@ const MyPlugin ={
         })
 
         // 4. 添加实例方法
+        Vue.prototype.$md5 = md5
+        Vue.prototype.$http = axios
         /* ajax接口封装 */
         Vue.prototype.$ajaxFn = function(opts) {
             if (!opts) return false;
@@ -44,6 +48,25 @@ const MyPlugin ={
                 );
             });
         };
+        /* axios 异步请求接口封装 */
+        Vue.prototype.$Axios = function(url, opts) {
+            const method = opts.type ? opts.type : 'get'
+            let data = method.toLocaleLowerCase() === 'post' ? 'data' : 'params'
+            return new Promise((resolve, reject) => {
+                axios({
+                    url: url || '',
+                    method: method,
+                    [data]: opts.data
+                })
+                    .then(res => {
+                        // console.log('Axios->', res)
+                        if (res.status == 200) {
+                            resolve(res.data)
+                        }
+                    })
+                    .catch(err => reject(err))
+            })
+        }
     }
 }
 export default MyPlugin;

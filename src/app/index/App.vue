@@ -55,34 +55,13 @@ export default {
     methods: {
         getData: function () {
             let _this = this;
-            var url = "/api/getbannerlist";
-            $.ajax({
-                url: url,
-                dataType: "json",
-            }).done(function (res) {
+            this.$ajaxFn({
+                url: '/mock/getbannerlist',
+                dataType: "json"
+            }).then(res => {
                 _this.bannerList = res.data.list;
                 _this.bannerList.length > 1 && (_this.options.loop = true);
             })
-        },
-        initData() {
-            // let _this = this;
-            // $.ajax({
-            //     url: `${mSiteUrl}/fApi/APPbanner`,
-            //     dataType: "jsonp",
-            //     jsonp: "callback",//传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
-            //     jsonpCallback: "jsonpCallback",//自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
-            // }).done(function (res) {
-            //     console.log("res->", res, _this.options)
-            //     _this.bannerList = res.banner;
-            //     _this.bannerList.length > 1 && (_this.options.loop = true);
-            //     _this.bannerList.map(item => {
-            //         _this.listPagination += ('<span></span>')
-            //     });
-            // }).fail(function () {
-            //     console.log("error");
-            // }).always(function () {
-            //     // console.log("complete");
-            // });
         },
         init() {
             this.getData();
@@ -133,6 +112,7 @@ body {
 .wrapper {
     overflow: hidden;
 }
+//banner
 .m-banner {
     height: 3.2rem;
     .numberCount {
@@ -152,6 +132,24 @@ body {
         margin: 0 0.1rem;
     }
 }
+//common
+.flex {
+    display: flex;
+    & > * {
+        margin: auto;
+    }
+}
+.tb-cell {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    & > * {
+        display: inline-block;
+    }
+}
+.al-c {
+    text-align: center;
+}
 .fade-enter-active,
 .fade-leave-acitve {
     transition: opacity 0.3s;
@@ -159,5 +157,48 @@ body {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
+}
+button {
+    &:focus {
+        outline: none;
+    }
+}
+.user-form-panel {
+    padding: 0.2rem;
+    a {
+        color: $c-blue;
+    }
+    .form-submit {
+        padding: 4px 10px;
+    }
+}
+.user-form {
+    padding: 0.3rem;
+    .form-group {
+        margin-top: 0.3rem;
+        label {
+            display: inline-block;
+            width: 1.6rem;
+            text-align: right;
+        }
+    }
+    .input-form {
+        border: 1px solid $borderc-default;
+        padding: 2px 10px;
+    }
+}
+.quote-list {
+    padding: 0.2rem;
+    ul {
+        li {
+            margin-top: 0.1rem;
+        }
+    }
+    .badge-name {
+        margin-right: 0.1rem;
+        font-weight: bold;
+    }
+    .badge-content {
+    }
 }
 </style>

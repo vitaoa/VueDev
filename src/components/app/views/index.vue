@@ -10,6 +10,14 @@
                 <div slot="loading">loading...</div>
             </Slider>
         </div>
+        <div class="quote-list">
+            <ul>
+                <li v-for="(item,i) in quoteList" :key="i">
+                    <span class="badge-name">{{item.mrname}}</span>
+                    <p class="badge-content">{{item.content}}</p>
+                </li>
+            </ul>
+        </div>
         <div class="topic-nav">
             <span v-for="(item,index) in topicDatas" :class="{active:index==defaultTabIndex}" @click="tabTopicNav(index,item.type)" :key="index">{{item.tab}}</span>
         </div>
@@ -45,7 +53,8 @@ export default {
             ],
             pageSize:10,//每页显示数据条数
             total:100,
-            perPages:5 //页面中的可见页码，其他的以...替代, 必须是奇数
+            perPages:5, //页面中的可见页码，其他的以...替代, 必须是奇数
+            quoteList: []
         }
     },
     props: ["sliderOptions", "bannerData"],
@@ -59,9 +68,7 @@ export default {
             this.$emit('jumpLink', obj)
         },
         getDatas(tabIndex){
-            this.$ajaxFn({
-                url: '/api/v1/topics',
-                dataType: "json",
+            this.$Axios("/api/v1/topics", {
                 data:{
                     page:this.topicDatas[tabIndex].currentPage,
                     limit:this.pageSize,
@@ -73,7 +80,7 @@ export default {
                 }else {
                     this.topicDatas[tabIndex].data = res.data;
                 }
-                console.log("getDatas============>index,currentPage：",tabIndex,this.topicDatas[tabIndex].currentPage)
+                console.log("getDatas============>index,currentPage：", tabIndex, this.topicDatas[tabIndex].currentPage)
             });
         },
         tabTopicNav(tabIndex){
@@ -87,11 +94,14 @@ export default {
         }
     },
     mounted(){
-        this.getDatas(0,'');
         console.log("mounted==========")
     },
     created(){
         this.$emit('curNumberRandom');
+        this.getDatas(0);
+        this.$Axios("/mock/quotes", { type: 'post', data: { "num": "2", key: "雨果" } }).then(res => {
+            this.quoteList = res
+        });
         console.log("created==========")
     }
 }
