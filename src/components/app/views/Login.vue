@@ -1,31 +1,73 @@
 <template>
     <div class="user-form-panel login">
-        <p class="al-c">登录</p>
         <div class="user-form">
-            <div class="form-group">
-                <label>用户名：</label>
-                <input type="text" class="input-form" v-model="username" placeholder="请输入用户名" />
-            </div>
-            <div class="form-group">
-                <label>密码：</label>
-                <input type="password" class="input-form" v-model="password" placeholder="请输入密码" />
+            <EfInput type="text" :borderActive="borderActive" v-model="username" placeholder="请输入用户名" @input="inputChangeUsername">
+                <span>用户名</span>
+            </EfInput>
+            <EfInput
+                type="password"
+                id="passwordRaw_div"
+                :borderActive="borderActive"
+                v-model="password"
+                placeholder="设置密码"
+                @input="inputChangePassword"
+            >
+                <span>设置密码</span>
+            </EfInput>
+            <div class="form-agreement">
+                <EfCheckbox v-model="checked" @change="checkBoxChange">我已仔细阅读并同意</EfCheckbox>
             </div>
         </div>
         <div class="al-c">
-            <button @click="login" class="form-submit">登录</button>
+            <EfButton color="primary" type="block" radius="true" nativeType="submit" :disabled="disabled" @click="login">登录</EfButton>
+            <EfButton color="link" to="/register">去注册</EfButton>，可以查看更多
         </div>
-        <router-link to="/register">去注册</router-link>
     </div>
 </template>
 <script>
+import EfButton from '@/components/efui/button/button'
+import EfCheckbox from '@/components/efui/checkbox/checkbox'
+import EfInput from '@/components/efui/input/input'
 export default {
     data() {
         return {
             username: '',
-            password: ''
+            password: '',
+            usernameNull: true,
+            passwordNull: true,
+            checked: false,
+            disabled: true,
+            borderActive: true
         }
     },
     methods: {
+        inputChangeUsername(val) {
+            if (val) {
+                this.usernameNull = false
+            } else {
+                this.usernameNull = true
+            }
+            this.$nextTick(this.submitDisabled);
+        },
+        inputChangePassword(val) {
+            if (val) {
+                this.passwordNull = false
+            } else {
+                this.passwordNull = true
+            }
+            this.$nextTick(this.submitDisabled);
+        },
+        submitDisabled() {
+            if (this.passwordNull || this.usernameNull || !this.checked) {
+                this.disabled = true
+            } else {
+                this.disabled = false
+            }
+        },
+        checkBoxChange(val) {
+            this.checked = val;
+            this.$nextTick(this.submitDisabled);
+        },
         async login(e) {
             e.preventDefault();
             try {
@@ -43,8 +85,11 @@ export default {
                 console.log(err)
             }
         }
+    },
+    components: {
+        EfButton,
+        EfCheckbox,
+        EfInput
     }
 }
 </script>
-<style scoped lang="scss">
-</style>

@@ -1,0 +1,16 @@
+
+// ie6, ie7
+@mixin ie-hide-text() {
+  text-indent: -9999px;
+  text-align: left;
+}
+
+@mixin text-hide() {
+  font: 0/0 a;
+  height: 0;
+  color: transparent;
+  overflow: hidden;
+  white-space: nowrap;
+  text-indent: 100%;
+  @include ie-hide-text();
+}

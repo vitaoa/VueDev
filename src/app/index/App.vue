@@ -158,35 +158,6 @@ body {
 .fade-leave-to {
     opacity: 0;
 }
-button {
-    &:focus {
-        outline: none;
-    }
-}
-.user-form-panel {
-    padding: 0.2rem;
-    a {
-        color: $c-blue;
-    }
-    .form-submit {
-        padding: 4px 10px;
-    }
-}
-.user-form {
-    padding: 0.3rem;
-    .form-group {
-        margin-top: 0.3rem;
-        label {
-            display: inline-block;
-            width: 1.6rem;
-            text-align: right;
-        }
-    }
-    .input-form {
-        border: 1px solid $borderc-default;
-        padding: 2px 10px;
-    }
-}
 .quote-list {
     padding: 0.2rem;
     ul {
@@ -199,6 +170,29 @@ button {
         font-weight: bold;
     }
     .badge-content {
+    }
+}
+.user-form-panel {
+    padding-left: 30px;
+    padding-right: 30px;
+    .user-form {
+        padding: 20px 0 30px;
+    }
+    .form-agreement {
+        font-size: 14px;
+        color: #4b4b4b;
+        padding-top: 20px;
+        a {
+            color: #3b86c9;
+        }
+        input[type="checkbox"] {
+            &:checked {
+            }
+        }
+        &.checkdbox {
+            input[type="checkbox"] {
+            }
+        }
     }
 }
 </style>
