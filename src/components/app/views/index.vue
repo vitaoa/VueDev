@@ -24,7 +24,7 @@
         <div class="topic-list">
             <div v-for="(topics,index) in topicDatas" class="topic-sub-list" :class="{active:index==defaultTabIndex}" :key="index">
                 <ul>
-                    <li v-for="(topic,i) in topics.data" :key={i}>
+                    <li v-for="(topic,i) in topics.data" :key="{i}">
                         <span class="list-num">{{i+1}}.</span>
                         <span class="txt-badge">置顶</span>
                         <div class="topic-title">{{topic.title}}</div>
@@ -99,7 +99,7 @@ export default {
     created(){
         this.$emit('curNumberRandom');
         this.getDatas(0);
-        this.$Axios("/mock/quotes", { type: 'post', data: { "num": "2", key: "雨果" } }).then(res => {
+        this.$Axios("/mock/quotes", { type: 'post', data: { "num": "1", key: "冈察洛夫" } }).then(res => {
             this.quoteList = res
         });
         console.log("created==========")
@@ -107,23 +107,55 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.topic-nav{font-size: 14px;background:$bgc-default;color:$bgc-default-fc;margin-top: .2rem;padding:.1rem 0;
-    span{display: inline-block;margin: 0 .1rem;}
-    .active{color:$bgc-default-active-fc;}
-}
-.topic-list{padding: .2rem 0;
-    .topic-sub-list{display: none;
-        &.active{display: block;}
-        ul{padding: 0 .2rem;}
+.topic-nav {
+    font-size: 14px;
+    background: $bgc-default;
+    color: $bgc-default-fc;
+    margin-top: 0.2rem;
+    padding: 0.1rem 0;
+    span {
+        display: inline-block;
+        margin: 0 0.1rem;
     }
-    ul{
-        li{
-            & + li{margin-top: .2rem;}
-            span{float: left;margin-right: .1rem;}
+    .active {
+        color: $bgc-blue-default;
+    }
+}
+.topic-list {
+    padding: 0.2rem 0;
+    .topic-sub-list {
+        display: none;
+        &.active {
+            display: block;
+        }
+        ul {
+            padding: 0 0.2rem;
         }
     }
-    .list-num{}
-    .txt-badge{border-radius: .03rem;background: $bgc-green-default;color:$bgc-green-default-fc;padding: 0 .1rem;}
-    .topic-title{display: block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;}
+    ul {
+        li {
+            & + li {
+                margin-top: 0.2rem;
+            }
+            span {
+                float: left;
+                margin-right: 0.1rem;
+            }
+        }
+    }
+    .list-num {
+    }
+    .txt-badge {
+        border-radius: 0.03rem;
+        background: $bgc-blue-default;
+        color: $bgc-blue-default-fc;
+        padding: 0 0.1rem;
+    }
+    .topic-title {
+        display: block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 </style>

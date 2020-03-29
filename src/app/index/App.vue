@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" :class="{'fixed-footer':footerNav}">
         <transition name="fade">
             <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" @topicDatas="getTopicDatas" @curNumberRandom="getNumberRandom" @jumpLink="jumpLink" />
         </transition>
@@ -20,7 +20,7 @@ export default {
                 {name:"首页",icon:"icon-APPkaifa",path:"/home"},
                 {name:"脚本",icon:"icon-js",path:"/js"},
                 {name:"框架",icon:"icon-frame",path:"/frame"},
-                {name:"全栈",icon:"icon-code",path:"/full"},
+                {name:"进阶",icon:"icon-code",path:"/full"},
             ],
             bannerList: [],
             options: {
@@ -70,7 +70,7 @@ export default {
             //数字随机累加
             setInterval(() => {
                 this.curNumber += this.randomNumBoth(1, 5)
-            }, 3000)
+            }, 2000)
         },
         jumpLink(item) {
             let url = item.url
@@ -101,25 +101,30 @@ export default {
 @import "/static/iconfont/iconfont.css";
 @import "~@/scss/mixins/library";
 @import "~@/scss/normalize";
+@import "~@/scss/efui/components/docsheader";
 html {
     font-size: 100px;
 }
 body {
-    font: 13px/1.4 PingFang SC, Microsoft YaHei, simsun, "sans-serif", helvetica,
+    font: 12px/1.4 PingFang SC, Microsoft YaHei, simsun, "sans-serif", helvetica,
         arial;
     color: $c-default;
 }
 .wrapper {
     overflow: hidden;
+    &.fixed-footer {
+        padding-bottom: 50px;
+    }
 }
 //banner
 .m-banner {
     height: 3.2rem;
+    border-bottom: 1px solid $bgc-default;
     .numberCount {
         position: absolute;
-        top: 0;
+        top: 0.1rem;
         left: 0.1rem;
-        line-height: 0.36rem;
+        line-height: 2;
         .lottery-block {
             @include inline-block;
         }
@@ -127,9 +132,14 @@ body {
 }
 .numberCount {
     font-size: 0.2rem;
-    color: $bgc-default-fc;background:$bgc-default;
+    padding: 0 0.08rem;
+    color: $bgc-blue-default-fc;
+    background: $bgc-blue-default;
+    text-transform: uppercase;
+    box-shadow: 0.04rem 0.04rem 0 rgba($c-default, 0.5);
+    border-radius: 0.04rem;
     span {
-        margin: 0 0.1rem;
+        margin-left: 0.1rem;
     }
 }
 //common
@@ -194,5 +204,30 @@ body {
             }
         }
     }
+}
+
+@keyframes widthFull {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+@keyframes scale-up {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(0.2);
+        transform: scale(0.2);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+.scale-up {
+    animation: scale-up 0.5s ease-out both;
 }
 </style>

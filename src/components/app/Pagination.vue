@@ -110,12 +110,24 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.pagination{font-size: 12px;background:$bgc-default;padding:.1rem;margin-top: .2rem;
-    .btn{display:inline-block;padding: 4px;line-height:1;border:1px solid $borderc-default;border-radius: 2px;margin-left: -1px;
+.pagination {
+    font-size: 0.24rem;
+    background: $bgc-default;
+    padding: 0.12rem;
+    margin-top: 0.2rem;
+    .btn {
+        display: inline-block;
+        padding: 0.08rem 0.15rem;
+        line-height: 1;
+        border: 1px solid $borderc-default;
+        margin-left: -1px;
+        &.radius {
+            border-radius: 2px;
+        }
         &--disabled,
-        &--more{
+        &--more {
             background-color: #fff;
-            color: #505050;
+            color: $bgc-default-fc;
         }
         //禁用
         &--disabled {

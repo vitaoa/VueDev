@@ -1,9 +1,9 @@
 <template>
-    <div class="input" :class="{'is-disabled': disabled }" :id="id">
+    <div class="input" :class="{'is-disabled': disabled,'actived':focused ,'inputting':inputting}" :id="id">
         <label class="input-label" v-if="$slots.default">
             <slot />
         </label>
-        <div class="input-box" :class="{'border-active':borderActive}">
+        <div class="input-box" :class="{'border-active':borderActive,'border-actived':borderActived}">
             <input
                 :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
                 class="inp-font"
@@ -16,12 +16,18 @@
                 @change="handleChange"
             />
         </div>
+        <div v-if="isShowMes" class="wrong-icon">
+            <i class="iconfont icon-cuowukongxin"></i>
+            {{message}}
+        </div>
     </div>
 </template>
 
 <script>
+import AsyncValidator from 'async-validator';
 export default {
     name: "EfInput",
+    inject: ['efForm'],
     props: {
         value: [String, Number],
         readonly: Boolean,
@@ -34,46 +40,81 @@ export default {
         class: String,
         id: String,
         placeholder: String,
-        type: String
+        type: String,
+        prop: String
     },
     data() {
         return {
             focused: false,
-            passwordVisible: false
+            inputting: false,
+            borderActived: false,
+            passwordVisible: false,
+            isRequired: false,
+            isShowMes: false,
+            message: ''
         };
     },
     mounted() {
+        if (this.prop) {
+            this.setRules();
+        }
     },
     computed: {
-        nativeInputValue() {
-            return this.value === null || this.value === undefined ? '' : String(this.value);
-        },
+        fieldValue() {
+            return this.efForm.model[this.prop]
+        }
     },
     methods: {
-        setNativeInputValue() {
-            if (this.value === this.nativeInputValue) return;
-            this.value = this.nativeInputValue;
+        getRules() {
+            let formRules = this.efForm.rules;
+            formRules = formRules ? formRules[this.prop] : [];
+            return formRules;
+        },
+        setRules() {
+            let rules = this.getRules();
+            if (rules.length) {
+                rules.forEach(rule => {
+                    if (rule.required !== undefined) this.isRequired = rule.required
+                });
+            }
+        },
+        // 过滤出符合要求的 rule 规则
+        getFilteredRule(trigger) {
+            const rules = this.getRules();
+            return rules.filter(rule => !rule.trigger || rule.trigger.indexOf(trigger) !== -1);
+        },
+        validate(trigger, cb) {
+            let rules = this.getFilteredRule(trigger);
+            if (!rules || rules.length === 0) return true;
+            // 使用 async-validator
+            const validator = new AsyncValidator({ [this.prop]: rules });
+            let model = { [this.prop]: this.fieldValue };
+            validator.validate(model, { firstFields: true }, errors => {
+                this.isShowMes = errors ? true : false;
+                this.message = errors ? errors[0].message : '';
+                if (cb) cb(this.message);
+            })
         },
         handleBlur(ev) {
             this.focused = false;
+            this.inputting = false;
             this.$emit('blur', ev);
+            this.validate('blur');
         },
         handleFocus(ev) {
             this.focused = true;
             this.$emit('focus', ev);
         },
         handleInput(ev) {
-            if (ev.target.value === this.nativeInputValue) return;
+            this.inputting = true;
+            this.value = ev.target.value;
+            this.borderActived = !!this.value;
+            // console.log("this.value=>", this.value, !this.value)
             this.$emit('input', ev.target.value);
-            this.$nextTick(this.setNativeInputValue);
+            this.validate('change');
         },
         handleChange: function (ev) {
             this.$emit("change", ev);
-        }
-    },
-    watch: {
-        nativeInputValue(val) {
-            this.setNativeInputValue();
         }
     }
 };
@@ -90,51 +131,6 @@ export default {
             top: 0;
         }
     }
-    &.inputCorrect {
-        .result-icon {
-            display: block;
-        }
-        &.inputted {
-            .result-icon {
-                display: none;
-            }
-        }
-    }
-    &.inputError {
-        .wrong-icon {
-            &.wrong-icon-cuo {
-                display: block;
-            }
-        }
-        & ~ .inputError {
-            .wrong-icon {
-                &.wrong-icon-cuo {
-                    display: none;
-                }
-            }
-        }
-    }
-    &.inputting {
-        .wrong-icon {
-            &.wrong-icon-cuo {
-                display: none;
-            }
-        }
-        & ~ .input {
-            .wrong-icon {
-                &.wrong-icon-cuo {
-                    display: none;
-                }
-            }
-        }
-        &.overlength {
-            .wrong-icon {
-                &.wrong-icon-cuo {
-                    display: block;
-                }
-            }
-        }
-    }
     .input-label {
         color: #7e7e7e;
         font-size: 14px;
@@ -144,36 +140,12 @@ export default {
         position: relative;
         top: 30px;
     }
-    .result-icon {
-        position: absolute;
-        left: 100%;
-        top: 8px;
-        margin-left: 12px;
-        display: none;
-        .i-correct {
-            display: inline-block;
-        }
-    }
-    .result-msg {
-        height: 27px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: #fff;
-    }
     .wrong-icon {
-        line-height: 17px;
-        color: #bcbcbc;
-        padding-left: 10px;
-        &.wrong-icon-cuo {
-            display: none;
-            color: #ef3232;
-            font-size: 14px;
-            padding-left: 0;
-        }
-        .jiant-icon {
-            float: left;
-            display: inline-block;
+        line-height: 1;
+        color: $c-red;
+        font-size: 12px;
+        padding-top: 0.1rem;
+        .iconfont {
             vertical-align: top;
         }
     }
@@ -219,7 +191,7 @@ export default {
     &.border-active {
         border-bottom: 1px solid #dcdcdc;
         &.border-actived {
-            border-bottom-color: #2e92fc;
+            border-bottom-color: $bgc-blue-default;
             transition: all 0.3s;
         }
     }

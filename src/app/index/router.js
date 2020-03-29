@@ -20,16 +20,16 @@ const routes = [
     },
     {
         path: '/frame',
-        component: { template: '<div>frameframeframeframe</div>' },
+        component: () => import(/* webpackChunkName: "frame" */ '../../components/app/views/frame.vue'),
         meta: {
             title: '框架'
         }
     },
     {
         path: '/full',
-        component: { template: '<div>fullfullfull</div>' },
+        component: () => import(/* webpackChunkName: "full" */ '../../components/app/views/full.vue'),
         meta: {
-            title: '全栈'
+            title: '前端技能进阶'
         }
     },
     {

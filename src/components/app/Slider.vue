@@ -907,21 +907,41 @@ export default {
     text-align: center;
     transform: translate3d(0px, 0px, 0px);
     /*transition: all 350ms ease 0s;*/
+    line-height: 0.4rem;
     z-index: 10;
 }
 .swiper-container-horizontal > .slider-pagination-bullets {
-    bottom: 10px;
+    font-size: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
 }
 .swiper-container-horizontal > * > .slider-pagination-bullet {
-    background: rgba($color: $c-default, $alpha: 0.3) none repeat scroll 0 0;
-    border-radius: 100%;
     display: inline-block;
-    height: 8px;
-    width: 8px;
+    vertical-align: middle;
+    height: 0.08rem;
+    width: 0.8rem;
     cursor: pointer;
-    margin: 0 5px;
+    margin: 0 0.1rem;
+    position: relative;
+    &::after {
+        content: "";
+        display: block;
+        height: 100%;
+        position: relative;
+        border-radius: 0.1rem;
+    }
+    &::before {
+        content: "";
+        background: rgba($bgc-default, 0.8);
+        display: block;
+        position: absolute;
+        border-radius: 0.2rem;
+        top: -0.02rem;
+        left: -0.02rem;
+        right: -0.02rem;
+        bottom: -0.02rem;
+    }
 }
 /*垂直*/
 .swiper-container-vertical > .slider-pagination-bullets {
@@ -944,8 +964,10 @@ export default {
 }
 .swiper-container-vertical .slider-pagination-bullet-active,
 .swiper-container-horizontal .slider-pagination-bullet-active {
-    background: $c-default none repeat scroll 0 0;
-    opacity: 1;
+    &::after {
+        background: darken($color: $bgc-blue-default, $amount: 10);
+        animation: widthFull 2s linear;
+    }
 }
 .slider-loading {
     position: absolute;
