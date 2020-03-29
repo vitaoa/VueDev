@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "/static/iconfont/iconfont.css";
+@import "~@/assets/iconfont/iconfont.css";
 @import "~@/scss/mixins/library";
 @import "~@/scss/normalize";
 @import "~@/scss/efui/components/docsheader";

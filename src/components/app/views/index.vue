@@ -68,7 +68,7 @@ export default {
             this.$emit('jumpLink', obj)
         },
         getDatas(tabIndex){
-            this.$Axios("/api/v1/topics", {
+            this.$Axios("https://cnodejs.org/api/v1/topics", {
                 data:{
                     page:this.topicDatas[tabIndex].currentPage,
                     limit:this.pageSize,

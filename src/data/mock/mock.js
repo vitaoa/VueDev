@@ -37,10 +37,10 @@ Mock.Random.bannerDefaultList()
 let bannerDataList = Mock.mock({
     list: [
         {
-            cover: '/static/images/banner.jpg'
+            cover: 'static/images/banner.jpg'
         },
         {
-            cover: '/static/images/banner2.jpg',
+            cover: 'static/images/banner2.jpg',
             title: 'activity'
         }
     ]
