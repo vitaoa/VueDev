@@ -36,7 +36,7 @@
                     <Pagination :tabIndex="defaultTabIndex" :total="total" :perPages="perPages" :currentPage="topicDatas[index].currentPage" :pageSize="pageSize" @change="pageChange"/>
                 </template>
             </div>
-            <EfLoading v-if="unloadedTopic" :fixed="false" :color="'#0275d8'" />
+            <EfLoading v-if="unloadedTopic" :fixed="false" :color="'#0e90d2'" />
         </div>
     </div>
 </template>
@@ -88,16 +88,18 @@ export default {
                 }else {
                     this.topicDatas[tabIndex].data = res.data;
                 }
+                this.defaultTabIndex = tabIndex;
                 this.unloadedTopic = false;
                 console.log("getDatas============>index,currentPage：", tabIndex, this.topicDatas[tabIndex].currentPage)
             });
         },
         tabTopicNav(tabIndex){
-            this.defaultTabIndex=tabIndex;
-            this.getDatas(tabIndex,this.topicDatas[tabIndex].type);
+            this.unloadedTopic = true;
+            this.getDatas(tabIndex);
         },
         pageChange(page,tabIndex) {
-            let index = tabIndex?tabIndex:0
+            this.unloadedTopic = true;
+            let index = tabIndex ? tabIndex : 0
             this.topicDatas[index].currentPage = page
             this.getDatas(index);
         },

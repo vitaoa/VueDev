@@ -81,13 +81,13 @@ router.beforeEach((to, from, next) => {
             next()
         }
     } else {
-        if (to.path === '/login' || to.path === '/home' || to.path === '/register') {
+        if (to.path === '/login' || to.path === '/home' || to.path === '/register' || to.path.indexOf('/topic/') !== -1) {
             next()
         } else {
             if (from.path === '/login') {
                 document.title = '登录'
             }
-            next('/login')
+            next(`/login?redirect=${to.path}`)
         }
     }
 })

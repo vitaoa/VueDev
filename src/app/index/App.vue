@@ -218,9 +218,10 @@ body {
     width: 100%;
     z-index: 100000;
     text-align: center;
+    background: rgba($background, 0.9);
     &--fixed {
         position: fixed;
-        background: rgba($color: $doc-bgc, $alpha: 1);
+        background: rgba($color: $bgc-blue-default, $alpha: 1);
     }
 }
 

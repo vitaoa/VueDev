@@ -4,7 +4,7 @@
             <div class="container scale-up">
                 <h2>{{topicItem.title}}</h2>
                 <p class="changes">
-                    <span>发布于{{createMonth}}前</span>
+                    <span>发布于{{createMonth}}</span>
                     <span>作者{{topicItem.author.loginname}}</span>
                     <span>{{topicItem.visit_count}}次浏览</span>
                     <span>来自{{topicTypes[topicItem.tab]}}</span>
@@ -37,9 +37,11 @@ export default {
             var _createMonth = new Date(this.topicItem.create_at).getMonth();
             var _createDate = new Date(this.topicItem.create_at).getDate();
             if (_curMonth - _createMonth > 0) {
-                return _curMonth - _createMonth + '个月';
+                return _curMonth - _createMonth + '个月前';
+            } else if (_curDate - _createDate > 0) {
+                return _curDate - _createDate + '天前';
             } else {
-                return _curDate - _createDate + '天';
+                return new Date(this.topicItem.create_at).toTimeString().split(' ')[0];
             }
         }
     },
