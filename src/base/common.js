@@ -50,13 +50,13 @@ const MyPlugin ={
         };
         /* axios 异步请求接口封装 */
         Vue.prototype.$Axios = function(url, opts) {
-            const method = opts.type ? opts.type : 'get'
+            const method = opts && opts.type ? opts.type : 'get'
             let data = method.toLocaleLowerCase() === 'post' ? 'data' : 'params'
             return new Promise((resolve, reject) => {
                 axios({
                     url: url || '',
                     method: method,
-                    [data]: opts.data
+                    [data]: opts && opts.data ? opts.data : '',
                 })
                     .then(res => {
                         // console.log('Axios->', res)

@@ -24,16 +24,19 @@
         <div class="topic-list">
             <div v-for="(topics,index) in topicDatas" class="topic-sub-list" :class="{active:index==defaultTabIndex}" :key="index">
                 <ul>
-                    <li v-for="(topic,i) in topics.data" :key="{i}">
-                        <span class="list-num">{{i+1}}.</span>
-                        <span class="txt-badge">置顶</span>
-                        <div class="topic-title">{{topic.title}}</div>
+                    <li v-for="(topic,i) in topics.data" :key="i">
+                        <EfLink @click="toPage(topic.id)">
+                            <span class="list-num">{{i+1}}.</span>
+                            <span class="txt-badge">置顶</span>
+                            <div class="topic-title">{{topic.title}}</div>
+                        </EfLink>
                     </li>
                 </ul>
                 <template v-if="topics.data">
                     <Pagination :tabIndex="defaultTabIndex" :total="total" :perPages="perPages" :currentPage="topicDatas[index].currentPage" :pageSize="pageSize" @change="pageChange"/>
                 </template>
             </div>
+            <EfLoading v-if="unloadedTopic" :fixed="false" :color="'#0275d8'" />
         </div>
     </div>
 </template>
@@ -41,10 +44,13 @@
 import Slider from '@/components/app/Slider'
 import SliderItem from '@/components/app/SliderItem'
 import Pagination from '@/components/app/Pagination'
+import EfLink from '@/components/efui/link/link'
+import EfLoading from '@/components/efui/load/Loading'
 export default {
     data() {
-        return{
-            defaultTabIndex:0,
+        return {
+            unloadedTopic: true,
+            defaultTabIndex: 0,
             topicDatas:[
                 {tab:'全部',type:'',data:'',currentPage:1},
                 {tab:'精华',type:'good',data:'',currentPage:1},
@@ -61,7 +67,9 @@ export default {
     components: {
         Slider,
         SliderItem,
-        Pagination
+        Pagination,
+        EfLink,
+        EfLoading
     },
     methods: {
         jumpLink(obj){
@@ -80,6 +88,7 @@ export default {
                 }else {
                     this.topicDatas[tabIndex].data = res.data;
                 }
+                this.unloadedTopic = false;
                 console.log("getDatas============>index,currentPage：", tabIndex, this.topicDatas[tabIndex].currentPage)
             });
         },
@@ -91,6 +100,9 @@ export default {
             let index = tabIndex?tabIndex:0
             this.topicDatas[index].currentPage = page
             this.getDatas(index);
+        },
+        toPage(id) {
+            this.$router.push({ path: '/topic/' + id })
         }
     },
     mounted(){
@@ -123,6 +135,8 @@ export default {
 }
 .topic-list {
     padding: 0.2rem 0;
+    position: relative;
+    min-height: 5rem;
     .topic-sub-list {
         display: none;
         &.active {

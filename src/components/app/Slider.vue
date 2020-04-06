@@ -937,10 +937,10 @@ export default {
         display: block;
         position: absolute;
         border-radius: 0.2rem;
-        top: -0.02rem;
-        left: -0.02rem;
-        right: -0.02rem;
-        bottom: -0.02rem;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 }
 /*垂直*/

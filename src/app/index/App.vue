@@ -1,15 +1,18 @@
 <template>
     <div class="wrapper" :class="{'fixed-footer':footerNav}">
         <transition name="fade">
-            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" @topicDatas="getTopicDatas" @curNumberRandom="getNumberRandom" @jumpLink="jumpLink" />
+            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" @curNumberRandom="getNumberRandom" @jumpLink="jumpLink" />
         </transition>
-        <Bottom :footerNav=footerNav />
+        <Bottom :footerNav="footerNav" />
+        <EfLoading v-if="unloaded" :fixed="true" :color="'#fff'" />
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { mSiteUrl, weatherUrl } from './config'
 import Bottom from '@/components/app/Bottom'
+import EfLoading from '@/components/efui/load/Loading'
 
 export default {
     name: 'app',
@@ -31,6 +34,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(['unloaded']),
         sliderOptions() {
             let sliderSet = Object.assign({}, this.options)
             return sliderSet;
@@ -92,7 +96,8 @@ export default {
         window["vm"] = this;
     },
     components: {
-        Bottom
+        Bottom,
+        EfLoading
     },
 }
 </script>
@@ -203,6 +208,19 @@ body {
             input[type="checkbox"] {
             }
         }
+    }
+}
+.page-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 100000;
+    text-align: center;
+    &--fixed {
+        position: fixed;
+        background: rgba($color: $doc-bgc, $alpha: 1);
     }
 }
 

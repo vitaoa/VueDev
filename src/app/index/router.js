@@ -54,6 +54,10 @@ const routes = [
     {
         path: '/',
         redirect:'/home'
+    },
+    {
+        path: '/topic/:id',
+        component: () => import(/* webpackChunkName: "topic" */ '../../components/app/views/Topic.vue')
     }
 ]
 
