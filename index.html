@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover" name="viewport">
+    <title></title>
+    <link rel="icon" href="/favicon.ico">
+    <script type="text/javascript" src="static/js/libs/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="static/js/libs/vue.min.js"></script>
+    
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5SLJCWM');</script>
+    
+  
+</head>
+
+<body>
+    
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SLJCWM" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    
+
+    <div id="app"></div>
+
+    <script>
+        /* 适配 */
+        (function (doc, win) {
+            function recalc(x, bol) {
+                var clientWidth = document.documentElement.clientWidth
+
+                if (bol && (!clientWidth || clientWidth > x)) {
+                    document.documentElement.style.fontSize = ''
+                    return
+                }
+                document.documentElement.style.fontSize = 100 * (clientWidth / x) + 'px'
+            }
+            var remCompute = function (width, device) {
+                if (window.addEventListener) {
+                    recalc(width, device)
+                    var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+                    window.addEventListener(resizeEvt, function () { recalc(width, device) }, false)
+                }
+            }
+                remCompute(750, true)
+        })(document, window)
+        function getUrlParams() {
+            var url = window.location.search // 获取url中"?"符及其后的字串
+            var theRequest = {}
+            if (url.indexOf('?') !== -1) {
+                var str = url.substr(1)
+                var strs = str.split('&')
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+                }
+            }
+            return theRequest
+        }
+        var UrlParams = getUrlParams(),
+            appName = UrlParams.appName || '',
+            isPRD = location.port == '';
+    </script>
+<script type="text/javascript" src="static/js/chunk-vendors.4ffe7264.js"></script><script type="text/javascript" src="static/js/index.5d774718.js"></script></body>
+
+</html>
