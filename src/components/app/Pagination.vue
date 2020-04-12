@@ -146,10 +146,6 @@ export default {
             z-index: 1;
             border-color: $bgc-blue-default;
         }
-        &:hover {
-            background-color: $bgc-blue-default-fc;
-            color: $bgc-blue-default;
-        }
     }
 }
 </style>

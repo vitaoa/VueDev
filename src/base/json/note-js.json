@@ -1,0 +1,298 @@
+[
+    {
+        "title": "HTML5 Web 存储",
+        "content": [
+            {
+                "title": "HTML5 提供了两种在客户端存储数据的新方法",
+                "list": [
+                    {
+                        "title": "localStorage",
+                        "list": [
+                            { "txt": "存储的数据没有时间限制，第二天、第二周或下一年之后，数据依然可用" },
+                            { "txt": "键值对总是以字符串的形式存储，意味着数值类型会自动转化为字符串类型" }
+                        ]
+                    },
+                    { "title": "sessionStorage", "list": [{ "txt": "针对一个 session 的数据存储。当用户关闭浏览器窗口后，数据会被删除" }] }
+                ]
+            },
+            {
+                "title": "之前，这些都是由 cookie 完成的",
+                "list": [
+                    { "txt": "cookie 不适合大量数据的存储，每条cookie的存储空间为4k" },
+                    { "txt": "一般由服务器生成，每个 HTTP 请求都会带着 Cookie 的信息，可设置失效时间" },
+                    { "txt": "如果在浏览器端生成Cookie，默认是关闭浏览器后失效" }
+                ]
+            },
+            { "title": "在 HTML5 中，只有在请求时使用数据" }
+        ]
+    },
+    {
+        "title": "JavaScript数组",
+        "content": [
+            {
+                "title": "JavaScript的数组方法",
+                "list": [
+                    {
+                        "title": "数组原型的方法",
+                        "list": [
+                            {
+                                "title": "push",
+                                "list": [
+                                    { "txt": "作用：向数组的末尾添加一项或多项" },
+                                    { "txt": "语法：arr.push(element1, ..., elementN)" },
+                                    { "txt": "返回值：返回新的数组长度" },
+                                    { "txt": "原数组是否改变：是" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3]; \nlet temp = arr.push('a', 'b'); \nconsole.log(arr,temp); //[1, 2, 3, 'a', 'b'] 5"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "unshift",
+                                "list": [
+                                    { "txt": "作用：向数组开头添加一项或多项" },
+                                    { "txt": "语法：arr.unshift(element1, ..., elementN)" },
+                                    { "txt": "返回值：返回新的数组长度" },
+                                    { "txt": "原数组是否改变：是" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3]; \nlet temp = arr.unshift('a', 'b'); \nconsole.log(arr, temp); // ['a', 'b', 1, 2, 3] 5"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "shift",
+                                "list": [
+                                    { "txt": "作用：删除数组第一项" },
+                                    { "txt": "语法：arr.shift()" },
+                                    { "txt": "返回值：删除的那一项,如果数组为空则返回undefined " },
+                                    { "txt": "原数组是否改变：是" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3]; \nlet temp = arr.shift(); \nconsole.log(arr, temp); // [2, 3] 1"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "pop",
+                                "list": [
+                                    { "txt": "作用：删除数组最后一项" },
+                                    { "txt": "语法：arr.pop()" },
+                                    { "txt": "返回值：删除的那一项,当数组为空时返回undefined" },
+                                    { "txt": "原数组是否改变：是" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3]; \nlet temp = arr.pop(); \nconsole.log(arr, temp); // [1, 2] 3"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "splice",
+                                "list": [
+                                    { "txt": "作用：删除、插入、替换数组项" },
+                                    {
+                                        "txt": "语法：arr.splice(start[, deleteCount[, item1[, item2[, ...]]]])",
+                                        "list": [
+                                            "start​: 指定修改的开始位置（从0计数）,如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数，这意味着-n是倒数第n个元素并且等价于array.length-n）；如果负数的绝对值大于数组的长度，则表示开始位置为第0位",
+                                            "deleteCount：整数，表示要移除的数组元素的个数，从start开始。如果 deleteCount <= 0，则不移除元素，这种情况下，至少应添加一个新元素",
+                                            "item1, item2, ...：要添加进数组的元素，如果不指定，则 splice() 将只删除数组元素"
+                                        ]
+                                    },
+                                    { "txt": "返回值：删除项组成的数组，如果没有删除元素，则返回空数组。" },
+                                    { "txt": "原数组是否改变：是" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3]; \n// 插入元素 \nlet temp = arr.splice(1, 0, 'a', 'b'); // 在索引1的位置插入元素'a'和'b' \nconsole.log(arr, temp); // [1, 'a', 'b', 2, 3] [] \n// 删除元素 \nlet temp1 = arr.splice(1, 2); // 删除从索引1的位置开始的2项 \nconsole.log(arr, temp1); // [1, 2, 3] ['a', 'b'] \n// 替换一个元素 \nlet temp2 = arr.splice(1, 1, 'a'); // 将索引1的位置的元素替换为'a' \nconsole.log(arr, temp2); // [1, 'a', 3 ] [2] \n// 替换多个元素 \nlet temp3 = arr.splice(0, 2, 'b', 'c'); // 将索引0的位置开始的两项，替换成’b‘和’c‘ \nconsole.log(arr, temp3); // [’b‘, 'c', 3] [1, 'a'] \n// 只传第一个参数，则删除从第一个参数指定的位置到数组结尾的所有项 \nlet temp4 = arr.splice(0); //从索引0的位置开始，删除后面的所有项 \nconsole.log(arr, temp4); // [] [’b‘, 'c', 3]"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "slice",
+                                "list": [
+                                    { "txt": "作用：截取指定位置的数组" },
+                                    {
+                                        "txt": "语法：arr.slice([begin[, end]])",
+                                        "list": [
+                                            "begin：索引开始（从 0 开始），如果该参数为负数，则表示从原数组中的倒数第几个元素开始提取",
+                                            "end：索引终止（从 0 开始），如果该参数为负数， 则表示在原数组中的倒数第几个元素结束抽取"
+                                        ]
+                                    },
+                                    { "txt": "返回值：返回截取的元素组成的数组,包括 begin，不包括end" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "concat",
+                                "list": [
+                                    { "txt": "作用：合并数组" },
+                                    {
+                                        "txt": "语法：arr.concat(value1[, value2[, ...[, valueN]]])",
+                                        "list": [
+                                            "参数的类型可以是任意类型",
+                                            "数据类型如字符串，数字和布尔（不是String，Number 和 Boolean 对象）：concat将字符串和数字的值复制到新数组中",
+                                            "对象引用（而不是实际对象）：concat将对象引用复制到新数组中。 原始数组和新数组都引用相同的对象。 也就是说，如果引用的对象被修改，则更改对于新数组和原始数组都是可见的。 这包括也是数组的数组参数的元素",
+                                            "对于新数组的任何操作（仅当元素不是对象引用时）都不会对原始数组产生影响，反之亦然"
+                                        ]
+                                    },
+                                    { "txt": "返回值：合并之后的数组" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "join",
+                                "list": [
+                                    { "txt": "作用：使用分隔符(默认为逗号)，将数组转为字符串" },
+                                    { "txt": "语法：arr.join([separator])" },
+                                    { "txt": "返回值：转化后的字符串" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "reverse",
+                                "list": [
+                                    { "txt": "作用：反转原数组" },
+                                    { "txt": "语法：arr.reverse()" },
+                                    { "txt": "返回值：反转后的数组" },
+                                    { "txt": "原数组是否改变：是" }
+                                ]
+                            },
+                            {
+                                "title": "sort",
+                                "list": [
+                                    { "txt": "作用：数组排序，(默认为升序，默认是针对字符的排序，如果需要按照数值排序，必须使用一个排序函数)" },
+                                    {
+                                        "txt": "语法：arr.sort([compareFunction])",
+                                        "list": [
+                                            "compareFunction：用来指定按某种顺序进行排列的函数",
+                                            "返回值大于0时调换当前比对项的顺序，否则顺序不变"
+                                        ]
+                                    },
+                                    { "txt": "返回值：排序后的数组" },
+                                    { "txt": "原数组是否改变：是" }
+                                ]
+                            },
+                            {
+                                "title": "map",
+                                "list": [
+                                    { "txt": "作用：创建一个新数组" },
+                                    {
+                                        "txt": "语法：var newArray = arr.map(callback(currentValue[, index[, array]]) {}[, thisArg])",
+                                        "list": [
+                                            "currentValue：当前元素",
+                                            "index：当前元素的索引",
+                                            "array：map 方法调用的数组，即数组对象本身",
+                                            "thisArg： 执行 callback 函数时，用于改变this的值"
+                                        ]
+                                    },
+                                    { "txt": "返回值：函数每次调用结果组成的数组" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "filter",
+                                "list": [
+                                    { "txt": "作用：创建一个新数组" },
+                                    { "txt": "语法：var newArray = arr.filter(callback(currentValue[, index[, array]])[, thisArg])" },
+                                    { "txt": "返回值：函数返回true的项组成的数组" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "forEach",
+                                "list": [
+                                    { "txt": "作用：对数组的每个元素执行一次给定的函数" },
+                                    { "txt": "语法：arr.forEach(callback(currentValue [, index [, array]])[, thisArg])" },
+                                    { "txt": "返回值：无" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            },
+                            {
+                                "title": "",
+                                "list": [{ "txt": "作用：" }, { "txt": "语法：" }, { "txt": "返回值：" }, { "txt": "原数组是否改变：" }],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "",
+                                "list": [{ "txt": "作用：" }, { "txt": "语法：" }, { "txt": "返回值：" }, { "txt": "原数组是否改变：" }],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": ""
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "",
+                                "list": [{ "txt": "作用：" }, { "txt": "语法：" }, { "txt": "返回值：" }, { "txt": "原数组是否改变：" }],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "title": "构造函数的方法（ES6新增部分）",
+                        "list": [
+                            {
+                                "title": "Array.from",
+                                "list": [
+                                    { "txt": "作用：将类数组转化为数组" },
+                                    {
+                                        "txt": "语法：Array.from(arrayLike[, mapFn[, thisArg]])",
+                                        "list": [
+                                            "arrayLike：类数组对象，可以是我们常见的nodeList、arguments、字符串、iterable对象等",
+                                            "mapFn: 对转化后的数组进行操作的回调函数",
+                                            "thisArg: 指定mapFn中的this",
+                                            "Array.from() 等价于 Array.prototype.slice.call(arguments,0)"
+                                        ]
+                                    },
+                                    { "txt": "返回值：转化后的数组，如果有mapFn,则返回结果是经过mapFn处理的数组" },
+                                    { "txt": "原数组是否改变：否" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "title": "ES6新增",
+                        "list": [
+                            { "title": "copyWithin" },
+                            {
+                                "title": "数组扩展运算符",
+                                "list": [
+                                    { "txt": "将数组通过扩展运算符转化为参数序列直接传参，无需使用apply转化了" },
+                                    { "txt": "用于复制和拼接数组" },
+                                    { "txt": "将字符串分解为真正的数组" }
+                                ],
+                                "eg": [
+                                    {
+                                        "type": "code",
+                                        "content": "let arr = [1, 2, 3];\n// apply写法 \n[].concat.apply(null, arr) \n// 扩展运算符写法 \n[].concat(...arr)"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper" :class="{'fixed-footer':footerNav}">
         <transition name="fade">
-            <router-view :sliderOptions="sliderOptions" :bannerData="bannerData" @curNumberRandom="getNumberRandom" @jumpLink="jumpLink" />
+            <router-view />
         </transition>
         <Bottom :footerNav="footerNav" />
         <EfLoading v-if="unloaded" :fixed="true" :color="'#fff'" />
@@ -25,72 +25,14 @@ export default {
                 {name:"框架",icon:"icon-frame",path:"/frame"},
                 {name:"进阶",icon:"icon-code",path:"/full"},
             ],
-            bannerList: [],
-            options: {
-                loop: true,
-                autoplay: 3000,
-            },
-            curNumber:12000
         }
     },
     computed: {
         ...mapState(['unloaded']),
-        sliderOptions() {
-            let sliderSet = Object.assign({}, this.options)
-            return sliderSet;
-        },
-        bannerData() {
-            let bArray = [];
-            this.bannerList.forEach(item => {
-                let slideHtml = '';
-                if (item.title == 'activity') {
-                    slideHtml = `<div class="numberCount">activity<span>${this.curNumber}</span> </div>`
-                }
-                bArray.push({
-                    style: `background-image:url(${item.cover});background-repeat:no-repeat;background-size:100%;`,
-                    title: item.title,
-                    html: slideHtml,
-                    url: item.url
-                })
-            });
-            return bArray;
-        }
     },
     methods: {
-        getData: function () {
-            let _this = this;
-            this.$ajaxFn({
-                url: '/mock/getbannerlist',
-                dataType: "json"
-            }).then(res => {
-                _this.bannerList = res.data.list;
-                _this.bannerList.length > 1 && (_this.options.loop = true);
-            })
-        },
-        init() {
-            this.getData();
-        },
-        getNumberRandom(data) {
-            //数字随机累加
-            setInterval(() => {
-                this.curNumber += this.randomNumBoth(1, 5)
-            }, 2000)
-        },
-        jumpLink(item) {
-            let url = item.url
-            if (!!url) {
-                window.open(url)
-            }
-        },
-        randomNumBoth(Min, Max) {
-            let Range = Max - Min;
-            let Rand = Math.random();
-            let num = Min + Math.round(Rand * Range);
-            return num;
-        }
     },
     created() {
-        this.init();
     },
     mounted: function () {
         window["vm"] = this;
@@ -117,6 +59,7 @@ body {
 }
 .wrapper {
     overflow: hidden;
+    font-size: 0.24rem;
     &.fixed-footer {
         padding-bottom: 50px;
     }

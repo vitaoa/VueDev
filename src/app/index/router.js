@@ -71,10 +71,11 @@ const router = new VueRouter({
 // 使用 router.beforeEach 注册一个全局前置守卫，判断用户是否登陆
 router.beforeEach((to, from, next) => {
     let token = window.localStorage.getItem('token')
+    let tokenLen = !!token ? userpoor.filter((v) => v.token == token).length : 0
     if (to.meta.title) {
         document.title = to.meta.title
     }
-    if (!!token) {
+    if (!!token && tokenLen > 0) {
         if (to.path === '/login' || to.path === '/register') {
             next('/home')
         } else {

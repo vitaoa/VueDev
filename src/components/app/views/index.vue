@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="m-banner">
-            <Slider ref="slider" :options="sliderOptions">
+            <Slider ref="slider" :options="sliderOptions" :bannerData="bannerData">
                 <!-- slideritem wrapped package with the components you need -->
                 <SliderItem v-for="(item,index) in bannerData" :key="index" :style="item.style" @click.native="jumpLink(item)" :title="item.title" :url="item.url">
                     <div v-if="item.html" v-html="item.html"></div>
@@ -19,20 +19,20 @@
             </ul>
         </div>
         <div class="topic-nav">
-            <span v-for="(item,index) in topicDatas" :class="{active:index==defaultTabIndex}" @click="tabTopicNav(index,item.type)" :key="index">{{item.tab}}</span>
+            <span v-for="(item,index) in topicDatas" :class="{active:index==defaultTabIndex-1}" @click="tabTopicNav(index+1,item.type)" :key="index">{{item.tab}}</span>
         </div>
         <div class="topic-list">
-            <div v-for="(topics,index) in topicDatas" class="topic-sub-list" :class="{active:index==defaultTabIndex}" :key="index">
+            <div v-for="(topics,index) in topicDatas" class="topic-sub-list" :class="{active:index==(defaultTabIndex-1)}" :key="index">
                 <ul>
-                    <li v-for="(topic,i) in topics.data" :key="i">
+                    <li v-for="(topic,i) in topics.data[topics.currentPage-1]" :key="i">
                         <EfLink @click="toPage(topic.id)">
                             <span class="list-num">{{i+1}}.</span>
-                            <span class="txt-badge">置顶</span>
+                            <span class="txt-badge" v-if="topic.top">置顶</span>
                             <div class="topic-title">{{topic.title}}</div>
                         </EfLink>
                     </li>
                 </ul>
-                <template v-if="topics.data">
+                <template v-if="topics.data.length>0">
                     <Pagination :tabIndex="defaultTabIndex" :total="total" :perPages="perPages" :currentPage="topicDatas[index].currentPage" :pageSize="pageSize" @change="pageChange"/>
                 </template>
             </div>
@@ -41,6 +41,7 @@
     </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 import Slider from '@/components/app/Slider'
 import SliderItem from '@/components/app/SliderItem'
 import Pagination from '@/components/app/Pagination'
@@ -49,21 +50,41 @@ import EfLoading from '@/components/efui/load/Loading'
 export default {
     data() {
         return {
-            unloadedTopic: true,
-            defaultTabIndex: 0,
-            topicDatas:[
-                {tab:'全部',type:'',data:'',currentPage:1},
-                {tab:'精华',type:'good',data:'',currentPage:1},
-                {tab:'分享',type:'share',data:'',currentPage:1},
-                {tab:'问答',type:'ask',data:'',currentPage:1},
-            ],
+            bannerList: [],
+            options: {
+                loop: true,
+                autoplay: 3000,
+            },
+            curNumber: 12000,
             pageSize:10,//每页显示数据条数
             total:100,
             perPages:5, //页面中的可见页码，其他的以...替代, 必须是奇数
             quoteList: []
         }
     },
-    props: ["sliderOptions", "bannerData"],
+    computed: {
+        ...mapState(['defaultTabIndex', 'topicDatas', 'unloadedTopic']),
+        sliderOptions() {
+            let sliderSet = Object.assign({}, this.options)
+            return sliderSet;
+        },
+        bannerData() {
+            let bArray = [];
+            this.bannerList.forEach(item => {
+                let slideHtml = '';
+                if (item.title == 'activity') {
+                    slideHtml = `<div class="numberCount">activity<span>${this.curNumber}</span> </div>`
+                }
+                bArray.push({
+                    style: `background-image:url(${item.cover});background-repeat:no-repeat;background-size:100%;`,
+                    title: item.title,
+                    html: slideHtml,
+                    url: item.url
+                })
+            });
+            return bArray;
+        },
+    },
     components: {
         Slider,
         SliderItem,
@@ -72,36 +93,47 @@ export default {
         EfLoading
     },
     methods: {
-        jumpLink(obj){
-            this.$emit('jumpLink', obj)
+        ...mapActions(['getTopics']),
+        getBannerData: function () {
+            let _this = this;
+            this.$ajaxFn({
+                url: '/mock/getbannerlist',
+                dataType: "json"
+            }).then(res => {
+                _this.bannerList = res.data.list;
+                _this.bannerList.length > 1 && (_this.options.loop = true);
+            })
         },
-        getDatas(tabIndex){
-            this.$Axios("https://cnodejs.org/api/v1/topics", {
-                data:{
-                    page:this.topicDatas[tabIndex].currentPage,
-                    limit:this.pageSize,
-                    tab:this.topicDatas[tabIndex].type
-                }
-            }).then(res=>{
-                if (res.data && typeof res.data == 'string') {
-                    this.topicDatas[tabIndex].data = JSON.parse(res.data);
-                }else {
-                    this.topicDatas[tabIndex].data = res.data;
-                }
-                this.defaultTabIndex = tabIndex;
-                this.unloadedTopic = false;
-                console.log("getDatas============>index,currentPage：", tabIndex, this.topicDatas[tabIndex].currentPage)
+        getNumberRandom(data) {
+            //数字随机累加
+            setInterval(() => {
+                this.curNumber += this.randomNumBoth(1, 5)
+            }, 2000)
+        },
+        jumpLink(item) {
+            let url = item.url
+            if (!!url) {
+                window.open(url)
+            }
+        },
+        randomNumBoth(Min, Max) {
+            let Range = Max - Min;
+            let Rand = Math.random();
+            let num = Min + Math.round(Rand * Range);
+            return num;
+        },
+        tabTopicNav(tabIndex) {
+            this.$store.dispatch("getTopics", {
+                tabIndex: tabIndex,
+                limit: this.pageSize
             });
         },
-        tabTopicNav(tabIndex){
-            this.unloadedTopic = true;
-            this.getDatas(tabIndex);
-        },
-        pageChange(page,tabIndex) {
-            this.unloadedTopic = true;
-            let index = tabIndex ? tabIndex : 0
-            this.topicDatas[index].currentPage = page
-            this.getDatas(index);
+        pageChange(page, tabIndex) {
+            this.$store.dispatch("getTopics", {
+                tabIndex: tabIndex ? tabIndex : this.defaultTabIndex,
+                limit: this.pageSize,
+                page: page
+            });
         },
         toPage(id) {
             this.$router.push({ path: '/topic/' + id })
@@ -111,8 +143,12 @@ export default {
         console.log("mounted==========")
     },
     created(){
-        this.$emit('curNumberRandom');
-        this.getDatas(0);
+        this.getNumberRandom();
+        this.getBannerData();
+        this.getTopics({
+            tabIndex: this.defaultTabIndex,
+            limit: this.pageSize
+        })
         this.$Axios("/mock/quotes", { type: 'post', data: { "num": "1", key: "冈察洛夫" } }).then(res => {
             this.quoteList = res
         });
@@ -122,13 +158,14 @@ export default {
 </script>
 <style scoped lang="scss">
 .topic-nav {
-    font-size: 14px;
+    font-size: 0.28rem;
     background: $bgc-default;
     color: $bgc-default-fc;
     margin-top: 0.2rem;
     padding: 0.1rem 0;
     span {
         display: inline-block;
+        cursor: pointer;
         margin: 0 0.1rem;
     }
     .active {

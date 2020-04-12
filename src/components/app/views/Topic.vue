@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+import { mapState, mapMutations } from 'vuex'
 export default {
     data() {
         return {
@@ -24,10 +25,17 @@ export default {
                 'share': '分享',
                 'ask': '问答',
             },
-            topicItem: ''
+            topicItem: []
         }
     },
     computed: {
+        ...mapState(['topicDatas']),
+        topicDatasLists() {
+            let res = this.topicDatas.map(function (item, index, arr) {
+                return [].concat.apply([], item.data)
+            })
+            return [].concat(...res)
+        },
         topicId() {
             return this.$route.params.id
         },
@@ -54,20 +62,30 @@ export default {
         }
     },
     created() {
-        this.$store.commit('showLoading')
+        this.SHOW_LOADING()
         this.getTopicItem();
     },
     methods: {
+        ...mapMutations(['SHOW_LOADING', 'HIDE_LOADING']),
         getTopicItem() {
-            this.$Axios('https://cnodejs.org/api/v1/topic/' + this.$route.params.id).then(res => {
-                if (res.data && typeof res.data == 'string') {
-                    this.topicItem = JSON.parse(res.data);
-                } else {
-                    this.topicItem = res.data;
-                }
-                this.flag = true;
-                this.$store.commit('hideLoading')
+            let itemData = this.topicDatasLists.filter((item) => {
+                return (item && item.id && item.id == this.topicId)
             })
+            if (itemData.length > 0) {
+                this.topicItem = itemData[0]
+                this.flag = true;
+                this.HIDE_LOADING()
+            } else {
+                this.$Axios('https://cnodejs.org/api/v1/topic/' + this.$route.params.id).then(res => {
+                    if (res.data && typeof res.data == 'string') {
+                        this.topicItem = JSON.parse(res.data);
+                    } else {
+                        this.topicItem = res.data;
+                    }
+                    this.flag = true;
+                    this.HIDE_LOADING()
+                })
+            }
         }
     }
 }

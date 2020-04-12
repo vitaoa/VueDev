@@ -1,5 +1,6 @@
 const Mock = require('mockjs')
 import quotesJson from '@/base/json/quotes.json'
+import noteJsJson from '@/base/json/note-js.json'
 
 // 使用mockjs模拟数据
 let dataList = Mock.mock({
@@ -53,7 +54,7 @@ Mock.mock('/mock/getbannerlist', (req, res) => {
     }
 })
 
-let userpoor = [
+window.userpoor = [
     { username: 'vita', password: 'e807f1fcf82d132f9bb018ca6738a19f', token: '123435465465' },
     { username: 'demo', password: '123456' }
 ]
@@ -111,6 +112,22 @@ Mock.mock('/mock/quotes', (req, res) => {
     res = quotesJson
     if (query && query.key) {
         res = quotesJson.filter(v => v.mrname == query.key)
+        if (query.num) {
+            res = res.slice(0, query.num)
+        }
+    } else {
+        if (query && query.num) {
+            res = quotesJson.slice(0, query.num)
+        }
+    }
+    return res
+})
+//JS
+Mock.mock('/mock/notejs', (req, res) => {
+    const query = req.body ? JSON.parse(decodeURI(req.body)) : ''
+    res = noteJsJson
+    if (query && query.keyword) {
+        res = quotesJson.filter((v) => v.keyword == query.keyword)
         if (query.num) {
             res = res.slice(0, query.num)
         }

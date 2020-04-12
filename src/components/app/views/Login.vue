@@ -4,7 +4,7 @@
             <EfInput type="text" prop="username" :borderActive="borderActive" v-model="modelForm.username" placeholder="请输入用户名">
                 <span>用户名：</span>
             </EfInput>
-            <EfInput type="password" prop="password" :borderActive="borderActive" v-model="modelForm.password" placeholder="设置密码">
+            <EfInput type="password" prop="password" :borderActive="borderActive" v-model="modelForm.password" placeholder="请输入密码">
                 <span>密码：</span>
             </EfInput>
             <div class="form-agreement">
@@ -91,7 +91,7 @@ export default {
                 if (data.success) {
                     //登录成功跳转页面
                     this.$router.back()  //登陆成功返回上一页
-                    this.$store.commit('setToken', data.token)
+                    this.$store.commit('SET_TOKEN', data.token)
                     window.localStorage.setItem('token', data.token) //登录标识
                 } else {
                     alert(data.message)
