@@ -4,6 +4,7 @@
             <slot />
         </label>
         <div class="input-box" :class="{'border-active':borderActive,'border-actived':borderActived}">
+            <slot name="inpt" />
             <input
                 :type="showPassword ? (passwordVisible ? 'text': 'password') : type"
                 class="inp-font"

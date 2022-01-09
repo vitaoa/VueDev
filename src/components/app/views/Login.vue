@@ -4,9 +4,11 @@
             <EfInput type="text" prop="username" :borderActive="borderActive" v-model="modelForm.username" placeholder="请输入用户名">
                 <span>用户名：</span>
             </EfInput>
-            <EfInput type="password" prop="password" :borderActive="borderActive" v-model="modelForm.password" placeholder="请输入密码">
+            <EfInput type="text" prop="password" :borderActive="borderActive" v-model="modelForm.password" placeholder="请输入密码" @input="pswInput" :class="`${pswAbs?'is-abs':'' }`"> 
                 <span>密码：</span>
+                <span slot="inpt" ref="pswText1" class="inp-font txt1" :style="`width:${pswWidth}px;`" v-html="txtpsw" v-show="pswAbs"></span>
             </EfInput>
+            <span class="psw-input-text" ref="pwsText">{{modelForm.password}}</span>
             <div class="form-agreement">
                 <EfCheckbox v-model="checked" @change="checkBoxChange">我已仔细阅读并同意</EfCheckbox>
             </div>
@@ -41,10 +43,26 @@ export default {
                 password: [
                     { required: true, trigger: 'blur', validator: this.checkPassword, regs: /^[a-zA-Z0-9_]{6,12}$/ },
                 ]
-            }
+            },
+            pswWidth: 0
+        }
+    },
+    computed: {
+        txtpsw(){
+            console.log(',this.modelForm.password==== ', this.modelForm.password);
+            return this.modelForm.password.replace(/./g, '<i>•</i>');
+        },
+        pswAbs(){
+            return !!this.modelForm.password;
         }
     },
     methods: {
+        pswInput(o){
+            this.$nextTick(()=>{
+                console.log('input=====', o, this.$refs, this.$refs.pwsText.offsetWidth);
+                this.pswWidth = this.$refs.pwsText.offsetWidth;
+            })
+        },
         checkUsername(rule, value, callback) {
             var regs = rule.regs;
             if (!value) {
@@ -120,3 +138,41 @@ export default {
     }
 }
 </script>
+<style scoped lang="scss">
+.login{
+    position: relative;
+    .psw-input-text{
+        font-size: 16px;
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        left:0;
+    }
+    /deep/ .input{
+        &.is-abs{
+            .inp-font[type='text']{
+                color: transparent;
+                caret-color: #000;
+                position: absolute;
+                background: transparent;
+                left:0;
+                top:0;
+            }
+        }
+        .input-box{
+            position: relative;
+            .txt1{
+                // background:#ccc; 
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                i{font-style: normal;}
+            }
+            // .inp-font{
+            //     // -webkit-text-security: disc;
+            // }
+        }
+    }
+}
+</style>
