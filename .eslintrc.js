@@ -27,6 +27,7 @@ module.exports = {
         'vue/singleline-html-element-content-newline': 'off',
         'vue/multiline-html-element-content-newline': 'off',
         'vue/html-closing-bracket-spacing': 'off',
+        'vue/html-self-closing': 'off',
         'vue/require-default-prop': 'off',
         'vue/name-property-casing': ['error', 'PascalCase'],
         'vue/no-v-html': 'off',
@@ -67,8 +68,6 @@ module.exports = {
         'constructor-super': 2,
         curly: [2, 'multi-line'],
         'dot-location': [2, 'property'],
-        'eol-last': 2,
-        eqeqeq: ['error', 'always', { null: 'ignore' }],
         'generator-star-spacing': [
             2,
             {
@@ -228,7 +227,6 @@ module.exports = {
             }
         ],
         'space-before-blocks': [2, 'always'],
-        'space-before-function-paren': [2, 'never'],
         'space-in-parens': [2, 'never'],
         'space-infix-ops': 2,
         'space-unary-ops': [

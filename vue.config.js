@@ -6,7 +6,15 @@ const { htmlWebpackPlugins, pages } = require('./build/pages.js')
 // console.log('pages==============', pages)
 
 module.exports = {
-    pages,
+    pages: {
+        ...pages,
+        examples: {
+            entry: 'examples/main.js',
+            template: 'public/index.html',
+            filename: 'index.html',
+            productionSourceMap: false
+        }
+    },
     // publicPath: process.env.NODE_ENV === 'production' ? '/VueDev' : '/',//git
     publicPath: process.env.NODE_ENV === 'production' ? '' : '/', // test
     outputDir: 'dist',
@@ -23,8 +31,8 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'https://cnodejs.org',
-                ws: true, //是否启用websockets
-                changeOrigin: true, //开启代理
+                ws: true, // 是否启用websockets
+                changeOrigin: true, // 开启代理
                 pathRewrite: {
                     '^/api': '/api'
                 }
@@ -74,6 +82,16 @@ module.exports = {
         // 添加别名
         config.resolve.alias.set('@', path.join(__dirname, 'src'))
         // .set('vue$', 'vue/dist/vue.esm.js')
+        config.module
+            .rule('js')
+            .include.add(path.resolve(__dirname, 'packages'))
+            .end()
+            .use('babel')
+            .loader('babel-loader')
+            .tap((options) => {
+                // 修改选项
+                return options
+            })
     },
     css: {
         extract: false, // 是否使用 css 分离插件 ExtractTextPlugin，采用独立样式文件载入

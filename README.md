@@ -75,6 +75,47 @@
             }
         }
 
+# vue 构建库(lib 库模式打包)
+
+1.  将一个单独的入口构建为一个库的命令语句：
+    > >
+        "lib": "vue-cli-service build --target lib --name vefui  --dest lib packages/index.js"
+1.  这个入口可以是一个.js 文件或.vue 文件，如果没有指定入口，则会使用 src/App.vue
+
+# 发布到 npm
+
+1.  package.json 文件修改：
+    > >
+        "private": false,
+        "main": "lib/vefui.umd.min.js",
+1.  新增.npmignore 文件(忽略的文件设置):
+
+    > >
+
+        # 忽略目录
+        packages/
+        public/
+
+        # 忽略指定文件
+        vue.config.js
+        babel.config.js
+        *.map
+
+1.  npm 发布命令:
+
+    > >
+
+        登录：npm login
+        发布：npm publish
+
+1.  测试：
+    > >
+        下载：npm install efui --save
+        引入：在入口文件main.js里面引入
+            import EfUI from 'efui'
+            import 'efui/lib/efui.css'
+            Vue.use(EfUI)
+
 # 打包
 
 1.  不打包的 js，放到 public 目录下就行，build 的时候会自动打包到 dist 目录下
@@ -161,37 +202,3 @@
             查看所有分支的所有操作记录（包括已经被删除的 commit 记录和 reset 的操作）:git reflog
             重新回到以前提交的版本：git reset --hard commit_id
             再本地推送到远程分支：git push origin test
-
-### Project setup
-
-```
-npm install
-```
-
-#### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
-
-#### Compiles and minifies for production
-
-```
-npm run build
-```
-
-#### Run your tests
-
-```
-npm run test
-```
-
-#### Lints and fixes files
-
-```
-npm run lint
-```
-
-#### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
